@@ -11,3 +11,44 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model user{
+  id Int @id @default(autoincrement())
+  firstName String
+  lastName String
+  username String @unique
+  password String
+  email String  @unique
+  folders folder[]
+  files file[]
+}
+
+model folder{
+  id Int @id @default(autoincrement())
+  name String 
+  user user @relation(fields: [userId], references: [id])
+  userId Int
+  files file[]
+  @@unique([userId, name])
+}
+
+model file{
+  id Int @id @default(autoincrement())
+  name String
+  size BigInt
+  uploadTime DateTime @default(now())
+  url String?
+  fileType String
+  user user @relation(fields: [userId], references: [id])
+  userId Int
+  folder folder? @relation(fields: [folderId], references: [id])
+  folderId Int?
+}
+
+//prisma session
+model Session {
+  id        String   @id
+  sid       String   @unique
+  data      String   
+  expiresAt   DateTime
+}
