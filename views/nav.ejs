@@ -1,0 +1,10 @@
+<nav>
+  <a>Vaultbox</a>
+
+    <% if (locals.currentUser) { %>
+        <a href="/auth/log-out">Log-out</a>
+        <% } else { %>
+        <a href="/auth/log-in">Log-in</a>
+        <a href="/auth/sign-up">Sign-Up</a>
+        <% } %>
+</nav>

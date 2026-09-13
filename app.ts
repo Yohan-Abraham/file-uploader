@@ -65,17 +65,17 @@ app.use((req, res) => {
 });
 
 // ---- Error handler ----
-app.use(
-  (
-    err: Error,
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction,
-  ) => {
-    console.error(err);
-    res.status(500).render('error', { message: err.message });
-  },
-);
+// app.use(
+//   (
+//     err: Error,
+//     req: express.Request,
+//     res: express.Response,
+//     next: express.NextFunction,
+//   ) => {
+//     console.error(err);
+//     res.status(500).render('error', { message: err.message });
+//   },
+// );
 
 const PORT = process.env.PORT || 3000;
 const server = app.listen(PORT, () =>
