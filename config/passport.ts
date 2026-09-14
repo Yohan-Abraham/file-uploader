@@ -42,7 +42,13 @@ passport.serializeUser((user: any, done) => {
 // ---- Pull full user back out of the session on each request ----
 passport.deserializeUser(async (id: number, done) => {
   try {
-    const user = await prisma.user.findUnique({ where: { id } });
+    const user = await prisma.user.findUnique({
+      where: { id },
+      include: {
+        folders: { include: { files: true } },
+        files: true,
+      },
+    });
     done(null, user);
   } catch (err) {
     done(err);

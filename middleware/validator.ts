@@ -50,4 +50,9 @@ export const validateAddFile = [
     }
     return true;
   }),
+  body('folderId')
+    .trim()
+    .optional({ values: 'falsy' })
+    .isInt({ min: 1 })
+    .withMessage('folder is invalid'),
 ];

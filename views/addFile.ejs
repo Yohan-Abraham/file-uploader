@@ -10,7 +10,16 @@
     <section>
       <form action="" method="POST" enctype="multipart/form-data">
         <label for="filename">File Name: </label>
-        <input type="text" name="filename" />
+        <input type="text" name="filename" required />
+
+        <label for="folderId">Folder: </label>
+        <select name="folderId" id="folderId">
+          <option value="">Standalone file</option>
+          <% currentUser.folders.forEach(folder => { %>
+            <option value="<%= folder.id %>"><%= folder.name %></option>
+          <% }) %>
+        </select>
+
         <label for="fileinput">Choose File: </label>
         <input type="file" name="fileinput" required />
         <button type="submit">Add File</button>

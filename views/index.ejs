@@ -11,6 +11,35 @@
       
       <% if(locals.currentUser) {%>
         <a href="/files">Add File</a>
+        <a href="/folders">Add Folder</a>
+
+        <div>
+          <% currentUser.folders.forEach(folder => { %>
+            <h1><%=folder.name  %></h1>
+
+            <form action="/folders/<%=folder.id%>/update" method="get">
+              <button type="submit">Update Folder</button>
+            </form>
+
+            <form action="/folders/<%= folder.id %>/delete" method="POST">
+              <button type="submit">Delete Folder</button>
+            </form>
+
+            
+               <% folder.files.forEach(file => { %>
+                <h1><%=file.name  %></h1>
+                <form action="/files/<%= file.id %>/details" method="get">
+                  <button type="submit">View Details</button>
+                </form>
+
+                <form action="/files/<%= file.id %>/delete" method="POST">
+                 <button type="submit">Delete File</button>
+                </form>
+              <% }) %> 
+            
+            
+          <% }) %>
+        </div>
     <%}%>
     
     </section>
