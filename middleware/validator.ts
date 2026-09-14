@@ -52,7 +52,8 @@ export const validateAddFile = [
   }),
   body('folderId')
     .trim()
-    .optional({ values: 'falsy' })
+    .notEmpty()
+    .withMessage('folder is required')
     .isInt({ min: 1 })
     .withMessage('folder is invalid'),
 ];

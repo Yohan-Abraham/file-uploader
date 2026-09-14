@@ -21,16 +21,13 @@ export async function postFile(req: Request, res: Response) {
     return res.status(400).render('addFile', { error: 'No file uploaded' });
   }
 
-  let folderId: number | undefined;
-  if (req.body.folderId) {
-    folderId = Number(req.body.folderId);
-    const folder = await prisma.folder.findFirst({
-      where: { id: folderId, userId: req.user.id },
-    });
+  const folderId = Number(req.body.folderId);
+  const folder = await prisma.folder.findFirst({
+    where: { id: folderId, userId: req.user.id },
+  });
 
-    if (!folder) {
-      return res.status(404).render('addFile', { error: 'Folder not found' });
-    }
+  if (!folder) {
+    return res.status(404).render('addFile', { error: 'Folder not found' });
   }
 
   const { size, mimetype } = req.file;
@@ -39,8 +36,7 @@ export async function postFile(req: Request, res: Response) {
       name: req.body.filename,
       size: BigInt(size),
       fileType: mimetype,
-      userId: req.user.id,
-      ...(folderId === undefined ? {} : { folderId }),
+      folderId: folder.id,
     },
   });
 
@@ -54,7 +50,12 @@ export async function getFileDetails(req: Request, res: Response) {
 
   const id = Number(req.params.id);
 
-  const details = await prisma.file.findUnique({ where: { id: id } });
+  const details = await prisma.file.findFirst({
+    where: {
+      id,
+      folder: { userId: req.user.id },
+    },
+  });
   res.render('fileDetails', { details });
 }
 
@@ -71,7 +72,7 @@ export async function deleteFile(req: Request, res: Response) {
   const result = await prisma.file.deleteMany({
     where: {
       id: fileId,
-      userId: req.user.id,
+      folder: { userId: req.user.id },
     },
   });
 

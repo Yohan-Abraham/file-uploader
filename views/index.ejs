@@ -14,19 +14,23 @@
         <a href="/folders">Add Folder</a>
 
         <div>
-          <% currentUser.folders.forEach(folder => { %>
-            <h1><%=folder.name  %></h1>
+          <% currentUser.folders.filter(folder => folder.isRoot).forEach(myDrive => { %>
+            <h1><%= myDrive.name %></h1>
 
-            <form action="/folders/<%=folder.id%>/update" method="get">
-              <button type="submit">Update Folder</button>
-            </form>
+            <% myDrive.files.forEach(file => { %>
+              <h2><%= file.name %></h2>
+            <% }) %>
 
-            <form action="/folders/<%= folder.id %>/delete" method="POST">
-              <button type="submit">Delete Folder</button>
-            </form>
+            <% myDrive.children.forEach(folder => { %>
+              <h2><%= folder.name %></h2>
+              <form action="/folders/<%=folder.id%>/update" method="get">
+                <button type="submit">Update Folder</button>
+              </form>
 
-            
-               <% folder.files.forEach(file => { %>
+              <form action="/folders/<%= folder.id %>/delete" method="POST">
+                <button type="submit">Delete Folder</button>
+              </form>
+              <% folder.files.forEach(file => { %>
                 <h1><%=file.name  %></h1>
                 <form action="/files/<%= file.id %>/details" method="get">
                   <button type="submit">View Details</button>
@@ -35,20 +39,8 @@
                 <form action="/files/<%= file.id %>/delete" method="POST">
                  <button type="submit">Delete File</button>
                 </form>
-              <% }) %> 
-          <% }) %>
-        </div>
-
-        <div>
-          <% currentUser.files.forEach(file => { %>
-            <h1><%=file.name %></h1>
-            <form action="/files/<%= file.id %>/details" method="get">
-                  <button type="submit">View Details</button>
-                </form>
-
-                <form action="/files/<%= file.id %>/delete" method="POST">
-                 <button type="submit">Delete File</button>
-                </form>
+              <% }) %>
+            <% }) %>
           <% }) %>
         </div>
     <%}%>

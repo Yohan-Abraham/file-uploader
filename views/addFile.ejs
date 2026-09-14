@@ -13,8 +13,7 @@
         <input type="text" name="filename" required />
 
         <label for="folderId">Folder: </label>
-        <select name="folderId" id="folderId">
-          <option value="">Standalone file</option>
+        <select name="folderId" id="folderId" required>
           <% currentUser.folders.forEach(folder => { %>
             <option value="<%= folder.id %>"><%= folder.name %></option>
           <% }) %>

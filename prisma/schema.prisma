@@ -20,14 +20,17 @@ model user{
   password String
   email String  @unique
   folders folder[]
-  files file[]
 }
 
 model folder{
   id Int @id @default(autoincrement())
   name String 
+  isRoot Boolean @default(false)
   user user @relation(fields: [userId], references: [id])
   userId Int
+  parent folder? @relation("FolderHierarchy", fields: [parentId], references: [id], onDelete: Restrict)
+  parentId Int?
+  children folder[] @relation("FolderHierarchy")
   files file[]
   @@unique([userId, name])
 }
@@ -39,10 +42,8 @@ model file{
   uploadTime DateTime @default(now())
   url String?
   fileType String
-  user user @relation(fields: [userId], references: [id])
-  userId Int
-  folder folder? @relation(fields: [folderId], references: [id])
-  folderId Int?
+  folder folder @relation(fields: [folderId], references: [id], onDelete: Restrict)
+  folderId Int
 }
 
 //prisma session

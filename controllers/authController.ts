@@ -25,6 +25,12 @@ export async function postUser(req: Request, res: Response) {
       username: req.body.username,
       password: hashedPassword,
       email: req.body.email.toLowerCase(),
+      folders: {
+        create: {
+          name: 'mydrive',
+          isRoot: true,
+        },
+      },
     },
   });
   res.redirect('/');

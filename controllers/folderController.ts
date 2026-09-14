@@ -16,10 +16,27 @@ export async function postFolder(req: Request, res: Response) {
       .render('addFolder', { error: 'Folder name is required' });
   }
 
+  if (req.body.foldername.trim().toLowerCase() === 'mydrive') {
+    return res.status(400).render('addFolder', {
+      error: 'The mydrive folder is reserved',
+    });
+  }
+
+  const myDrive = await prisma.folder.findFirst({
+    where: { userId: req.user.id, isRoot: true },
+  });
+
+  if (!myDrive) {
+    return res.status(500).render('addFolder', {
+      error: 'Your mydrive folder could not be found',
+    });
+  }
+
   await prisma.folder.create({
     data: {
       name: req.body.foldername.trim(),
       userId: req.user.id,
+      parentId: myDrive.id,
     },
     include: {
       files: true,
@@ -43,6 +60,8 @@ export async function deleteFolder(req: Request, res: Response) {
     where: {
       id: folderId,
       userId: req.user.id,
+      isRoot: false,
+      parent: { userId: req.user.id },
     },
   });
 
@@ -70,9 +89,19 @@ export async function updateFolder(req: Request, res: Response) {
     return res.status(400).send('Invalid folder id');
   }
 
-  await prisma.folder.update({
-    where: { id: Number(req.params.id) },
-    data: { name: req.body.foldername },
+  const result = await prisma.folder.updateMany({
+    where: {
+      id: folderId,
+      userId: req.user.id,
+      isRoot: false,
+      parent: { userId: req.user.id },
+    },
+    data: { name: req.body.foldername.trim() },
   });
+
+  if (result.count === 0) {
+    return res.status(404).send('Folder not found or cannot be updated');
+  }
+
   res.redirect('/');
 }
