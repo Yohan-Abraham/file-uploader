@@ -12,6 +12,9 @@
       <p>Size: <%=details.size %> bytes</p>
       <p>Time of Upload: <%=details.uploadTime %></p>
       <p>File Type: <%=details.fileType %></p>
+      <form action="/files/<%=details.id%>/download" method="POST">
+        <button type="submit">Download File</button>
+      </form>
     </section>
   </body>
 </html>

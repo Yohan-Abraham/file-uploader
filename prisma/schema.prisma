@@ -40,7 +40,7 @@ model file{
   name String
   size BigInt
   uploadTime DateTime @default(now())
-  url String?
+  url String
   fileType String
   folder folder @relation(fields: [folderId], references: [id], onDelete: Restrict)
   folderId Int
