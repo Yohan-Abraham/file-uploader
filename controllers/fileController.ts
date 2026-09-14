@@ -46,3 +46,38 @@ export async function postFile(req: Request, res: Response) {
 
   res.redirect('/');
 }
+
+export async function getFileDetails(req: Request, res: Response) {
+  if (!req.user) {
+    return res.status(401).render('addFile', { error: 'Not authenticated' });
+  }
+
+  const id = Number(req.params.id);
+
+  const details = await prisma.file.findUnique({ where: { id: id } });
+  res.render('fileDetails', { details });
+}
+
+export async function deleteFile(req: Request, res: Response) {
+  if (!req.user) {
+    return res.status(401).redirect('/auth/log-in');
+  }
+
+  const fileId = Number(req.params.id);
+  if (!Number.isInteger(fileId)) {
+    return res.status(400).send('Invalid file id');
+  }
+
+  const result = await prisma.file.deleteMany({
+    where: {
+      id: fileId,
+      userId: req.user.id,
+    },
+  });
+
+  if (result.count === 0) {
+    return res.status(404).send('Folder not found');
+  }
+
+  res.redirect('/');
+}

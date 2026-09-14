@@ -36,8 +36,19 @@
                  <button type="submit">Delete File</button>
                 </form>
               <% }) %> 
-            
-            
+          <% }) %>
+        </div>
+
+        <div>
+          <% currentUser.files.forEach(file => { %>
+            <h1><%=file.name %></h1>
+            <form action="/files/<%= file.id %>/details" method="get">
+                  <button type="submit">View Details</button>
+                </form>
+
+                <form action="/files/<%= file.id %>/delete" method="POST">
+                 <button type="submit">Delete File</button>
+                </form>
           <% }) %>
         </div>
     <%}%>

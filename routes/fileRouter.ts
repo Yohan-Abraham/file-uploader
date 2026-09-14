@@ -1,5 +1,10 @@
 import { Router } from 'express';
-import { getFilePage, postFile } from '../controllers/fileController.js';
+import {
+  deleteFile,
+  getFileDetails,
+  getFilePage,
+  postFile,
+} from '../controllers/fileController.js';
 import multer from 'multer';
 import { validateAddFile } from '../middleware/validator.js';
 import crypto from 'crypto';
@@ -35,3 +40,7 @@ fileRouter.post(
   validateAddFile,
   postFile,
 );
+
+fileRouter.get('/:id/details', ensureAuthenticated, getFileDetails);
+
+fileRouter.post('/:id/delete', deleteFile);
