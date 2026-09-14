@@ -7,6 +7,12 @@
   </head>
   <body>
     <%-include('nav') %>
-    <section></section>
+    <section>
+      
+      <% if(locals.currentUser) {%>
+        <a href="/files">Add File</a>
+    <%}%>
+    
+    </section>
   </body>
 </html>

@@ -36,3 +36,18 @@ export const validateLogin = [
   body('username').trim().notEmpty().withMessage('username is required'),
   body('password').notEmpty().withMessage('password is required'),
 ];
+
+export const validateAddFile = [
+  body('filename')
+    .trim()
+    .notEmpty()
+    .withMessage('file name is required')
+    .isLength({ max: 255 })
+    .withMessage('file name must be 255 characters or fewer'),
+  body('fileinput').custom((_, { req }) => {
+    if (!req.file) {
+      throw new Error('a file is required');
+    }
+    return true;
+  }),
+];
