@@ -4,15 +4,39 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vaultbox</title>
+    <link rel="stylesheet" href="/styles.css" />
   </head>
-  <body>
+  <body class="bg-slate-900 flex flex-col text-amber-50 min-h-screen">
     <%-include('nav') %>
-    <section>
-      <form action="" method="POST">
-        <label for="foldername">Folder Name: </label>
-        <input type="text" name="foldername" required />
-        <button type="submit">Add Folder</button>
-      </form>
+    <section class="w-full flex flex-1 items-center justify-center">
+      <div class="border border-amber-100 px-4 py-4 rounded-2xl">
+        <a
+          href="/"
+          class="self-start text-sm font-semibold text-amber-50/60 hover:text-amber-200 transition-colors"
+          aria-label="Back to home"
+        >
+          ✕
+        </a>
+        <form action="" method="POST" class="flex flex-col gap-2 mt-2">
+          <label
+            for="foldername"
+            class="block text-sm font-medium tracking-wide mb-2 text-amber-100"
+            >Folder Name
+          </label>
+          <input
+            type="text"
+            name="foldername"
+            required
+            class="w-full rounded-lg bg-slate-900/80 border border-slate-700 px-3 py-2 text-sm text-amber-50 placeholder-slate-500 focus:outline-none focus:border-amber-200 focus:ring-1 focus:ring-amber-200 transition"
+          />
+          <button
+            type="submit"
+            class="w-full rounded-lg bg-amber-50 px-4 py-2 text-center text-sm font-semibold text-slate-900 transition hover:bg-amber-100 cursor-pointer shadow-sm active:scale-[0.99]"
+          >
+            Add Folder
+          </button>
+        </form>
+      </div>
     </section>
   </body>
 </html>
